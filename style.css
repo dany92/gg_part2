@@ -1,0 +1,70 @@
+@import url(https://fonts.googleapis.com/css?family=Lobster);
+
+html{
+	margin: 50px;
+	text-align: center;
+}
+
+h1{
+	font-size: 4vw;
+	color: #5696D4;
+}
+
+body{
+	font-family: 'Lobster', sans-serif;
+}
+
+main{
+	margin-top: 80px;
+}
+
+input{
+	font-family: 'Lobster', sans-serif;
+	display: inline-block;
+	margin: 10px;
+	border-radius: 5px;
+	height: 50px;
+	width: 20%;
+	font-size: 4vw;
+	text-align: center;
+	vertical-align: top;
+}
+
+button{
+	display: block;
+	font-family: 'Lobster', sans-serif;
+	font-size: 2vw;
+	color: white;
+	margin: 5px auto;
+	border-radius: 5px;
+	border: none;
+	height: 50px;
+	width: 15%;
+	text-shadow: -1px 1px black;
+}
+
+button:hover{
+	opacity: 0.8;
+}
+
+#guess{
+	display: inline;
+	background: #FCCF26;
+	font-size: 2vw;
+	padding: 0px;
+	margin-top: 13px;
+	vertical-align: top;
+	position: relative;
+}
+
+#hint{
+	display: block;
+	background: #EB7565;
+	font-size: 2vw;
+}
+
+#play{
+	display: block;
+	background: #A260AA;
+	font-size: 2vw;
+}
