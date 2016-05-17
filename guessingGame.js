@@ -44,5 +44,9 @@ function playAgain(){
 	// add code here
 }
 
+$(document).ready(function(){
+	$('h1').text("Changed Heading");
+	alert("working!");
+})
 
 /* **** Event Listeners/Handlers ****  */
