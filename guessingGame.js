@@ -4,6 +4,7 @@
 var playersGuess,
     winningNumber
 
+var game;
 
 
 /* **** Guessing Game Functions **** */
@@ -69,9 +70,32 @@ function initialize(){
 
 }
 
+
+//Game Object
+var Game = function(){
+	this.limit = 5; //number of tries allowed
+	this.players = []; //list of players
+	this.winningNum = 100; //winning number
+	this.init();
+}
+
+Game.prototype.init = function(){
+	this.setWinningNumber();
+}
+
+Game.prototype.addPlayer = function(player){
+	player.guessLeft = this.limit;
+	this.players.push(player);
+}
+
+Game.prototype.setWinningNumber = function(){
+	this.winningNum = generateWinningNumber();
+}
+
 //Player Object. Constructor
 var Player = function(){
 	this.numGuess = 0;
+	this.guessLeft = 0;
 	this.guesses = [];
 }
 
@@ -87,22 +111,25 @@ Player.prototype.filterGuess = function(guess){
 }
 
 $(document).ready(function(){
+	game = new Game();
 	var player = new Player();
-	var winningNumber = generateWinningNumber();
-	console.log("Winning number "+winningNumber);
+	game.addPlayer(player);
+	//var winningNumber = generateWinningNumber();
+	console.log("Winning number "+game.winningNum);
 
 	$('#guess').on('click', function(){
 		var guess = playersGuessSubmission();
 		console.log("Your guess "+guess);
 		//run checkGuess but the message will be from guessMessage()
-		var message = checkGuess(player, winningNumber, guess);
+		var message = checkGuess(player, game.winningNum, guess);
 		console.log(message);
 	});
 
 	$('#play').on('click',function(){
+		game = new Game();
 		player = new Player();
-		winningNumber = generateWinningNumber();
-		console.log("Winning number "+winningNumber);
+		game.addPlayer(player);
+		console.log("Winning number "+game.winningNum);
 	});
 
 });
