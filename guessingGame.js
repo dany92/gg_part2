@@ -48,7 +48,8 @@ function checkGuess(player, winNum, guess){
 
 //return a string that will be used in the DOM message when the checkGuess function is invoked.
 function guessMessage(player, msg){
-	return "This is player's " + player.numGuess + "th guess. " + msg;
+	var infoPlayer = "Number of guesses: " + player.numGuess + "\n";
+	return infoPlayer+ msg;
 }
 
 // Create a provide hint button that provides additional clues to the "Player"
@@ -63,19 +64,25 @@ function playAgain(){
 	// add code here
 }
 
-//constructor
+//initialize game. New player, New winning number.
+function initialize(){
+
+}
+
+//Player Object. Constructor
 var Player = function(){
 	this.numGuess = 0;
 	this.guesses = [];
 }
 
+//Methods
 Player.prototype.filterGuess = function(guess){
-	console.log(this.guesses);
 	if(this.guesses.indexOf(guess)> -1){
 		return false;
 	}
 	this.numGuess++;
 	this.guesses.push(guess);
+	console.log(this.guesses);
 	return true;
 }
 
@@ -87,15 +94,16 @@ $(document).ready(function(){
 	$('#guess').on('click', function(){
 		var guess = playersGuessSubmission();
 		console.log("Your guess "+guess);
-		//check guess
-
 		//run checkGuess but the message will be from guessMessage()
 		var message = checkGuess(player, winningNumber, guess);
 		console.log(message);
 	});
 
-
-
+	$('#play').on('click',function(){
+		player = new Player();
+		winningNumber = generateWinningNumber();
+		console.log("Winning number "+winningNumber);
+	});
 
 });
 
