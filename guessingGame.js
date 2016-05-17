@@ -25,18 +25,30 @@ function playersGuessSubmission(){
 function lowerOrHigher(winNum, guess){
 	//Display the result on the DOM. For now, alert
 	var higher = (winNum > guess) ? true:false;
-	return((higher)? "winning number is higher":"winning number is lower");
+	return((higher)? "Winning number is higher!":"Winning number is lower!");
 }
 
 // Check if the Player's Guess is the winning number 
 
-function checkGuess(winNum, guess){
-	return (winNum === guess)? true:false;
+function checkGuess(player, winNum, guess){
+	var message ="";
+	if(player.filterGuess(guess)){
+			if(winNum === guess){
+				//guessesd the right number!
+				message = "Congrats! You won";
+			}else{
+				message = lowerOrHigher(winNum, guess);
+			}
+	}else{
+		//duplicate guess
+		message ="duplicate guess!";
+	}
+	return guessMessage(player, message);
 }
 
 //return a string that will be used in the DOM message when the checkGuess function is invoked.
-function guessMessage(){
-
+function guessMessage(player, msg){
+	return "This is player's " + player.numGuess + "th guess. " + msg;
 }
 
 // Create a provide hint button that provides additional clues to the "Player"
@@ -70,24 +82,16 @@ Player.prototype.filterGuess = function(guess){
 $(document).ready(function(){
 	var player = new Player();
 	var winningNumber = generateWinningNumber();
-	console.log("winning number "+winningNumber);
+	console.log("Winning number "+winningNumber);
 
 	$('#guess').on('click', function(){
 		var guess = playersGuessSubmission();
-		console.log("your guess "+guess);
+		console.log("Your guess "+guess);
 		//check guess
-		if(player.filterGuess(guess)){
-			var result = checkGuess(winningNumber, guess);
-			if(result){
-				//guessesd the right number!
-				alert("congrats! you won");
-			}else{
-				lowerOrHigher(winningNumber, guess);
-			}
-		}else{
-			//duplicate guess
-			alert("duplicate guess!");
-		}
+
+		//run checkGuess but the message will be from guessMessage()
+		var message = checkGuess(player, winningNumber, guess);
+		console.log(message);
 	});
 
 
