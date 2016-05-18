@@ -4,7 +4,9 @@ var game;
 
 //Fetch players guess
 function playersGuessSubmission(){
-	return +$('#guess').val();
+	var guess = +$('#guess').val();
+	$('#guess').val('');
+	return guess;
 }
 
 // Determine if the next guess should be a lower or higher number
@@ -50,6 +52,7 @@ function provideHint(){
 function playAgain(){
 	// add code here
 	var numPlayers = $('#numPlayer').val() || 1;
+	$('#numPlayer').val('');
 	game = new Game();
 	for (var i = 0; i< numPlayers; i++){
 		var p = new Player();
@@ -79,7 +82,7 @@ $(document).ready(function(){
 		playAgain();
 		console.log("NEW ROUND");
 		currentPlayer = game.getCurrentPlayer();
-		$(this).attr('disabled','disabled'); //disable button
+		//$(this).attr('disabled','disabled'); //disable button
 		$('.preset').toggleClass('hide');
 		console.log(game.getWinningNumber());
 	});
@@ -94,7 +97,6 @@ $(document).ready(function(){
 		}else{
 			message += "Sorry. You ran out of turns";
 		}
-		console.log(message);
 		displayMessage(message);
 		game.nextPlayer();
 		currentPlayer = game.getCurrentPlayer();
@@ -102,6 +104,6 @@ $(document).ready(function(){
 
 	$('#replay').on('click',function(){
 		$('.preset').toggleClass('hide');
-		$('#start').removeAttr('disabled');
+		//$('#start').removeAttr('disabled');
 	});
 });
