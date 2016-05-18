@@ -20,7 +20,6 @@ main{
 
 input{
 	font-family: 'Lobster', sans-serif;
-	display: inline-block;
 	margin: 10px;
 	border-radius: 5px;
 	height: 50px;
@@ -31,7 +30,7 @@ input{
 }
 
 button{
-	display: block;
+	display: inline;
 	font-family: 'Lobster', sans-serif;
 	font-size: 2vw;
 	color: white;
@@ -41,30 +40,56 @@ button{
 	height: 50px;
 	width: 15%;
 	text-shadow: -1px 1px black;
+	outline: none;
+	vertical-align: top;
+	position: relative;
 }
 
 button:hover{
 	opacity: 0.8;
 }
 
-#guess{
-	display: inline;
+.next-line{
+	display:block;
+}
+
+#start{
+	background: #3F51B5;
+	font-size: 2vw;
+	padding: 0px;
+	margin-top: 13px;
+}
+
+#submit{
 	background: #FCCF26;
 	font-size: 2vw;
 	padding: 0px;
 	margin-top: 13px;
-	vertical-align: top;
-	position: relative;
 }
 
 #hint{
-	display: block;
 	background: #EB7565;
 	font-size: 2vw;
 }
 
-#play{
-	display: block;
+#replay{
 	background: #A260AA;
 	font-size: 2vw;
+}
+
+.highlight{
+	color: #F50057;
+	font-weight: bold;
+	padding: 5px;
+	border: solid 3px #F50057;
+	display: inline;
+}
+
+.hide{
+	display: none;
+}
+
+.result{
+	margin: 20px;
+	font-size: 20px;
 }

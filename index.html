@@ -7,10 +7,21 @@
 	</head>
 	<body>
 		<main>
-			<input type="number" min="1" max="100" placeholder="1 to 100" pattern="[1-9][0-9]?$|^100$" required autofocus>
-			<button type="button" id="guess">Guess</button>
-			<button type="button" id="hint">Hint!</button>
-			<button type="button" id="play">Play Again</button>
+			<div class="preset">
+				<input id="numPlayer" type="number" min="1" max="3" placeholder="# Players" required autofocus>
+				<button type="button" id="start">Start</button>
+			</div>
+			<div class="preset hide">
+				<div class='next-line'>
+					<input id="guess" type="number" min="1" max="100" placeholder="1 to 100" pattern="[1-9][0-9]?$|^100$" required>
+					<button type="button" id="submit">Guess</button>
+				</div>
+				<div class="result"></div>
+				<div class='next-line'>
+					<button type="button" id="hint">Hint!</button>
+					<button type="button" id="replay">Play Again</button>
+				</div>
+			</div>
 		</main>
 		<script src="jquery.min.js"></script>
 		<script src="game.js"></script>

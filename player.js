@@ -1,7 +1,7 @@
 //Player Object. Constructor
 var Player = function(){
+	this.playerNum = 0;
 	this.numGuess = 0;
-	this.guessLeft = 0;
 	this.guesses = [];
 }
 
@@ -14,4 +14,16 @@ Player.prototype.filterGuess = function(guess){
 	this.guesses.push(guess);
 	console.log(this.guesses);
 	return true;
+}
+
+Player.prototype.setPlayerNum = function(num){
+	this.playerNum = num;
+}
+
+Player.prototype.getPlayerNum = function(){
+	return this.playerNum;
+}
+
+Player.prototype.getNumGuess = function(){
+	return this.numGuess;
 }

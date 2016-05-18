@@ -1,24 +1,10 @@
 /* **** Global Variables **** */
 // try to elminate these global variables in your project, these are here just to start.
-
-var playersGuess,
-    winningNumber
-
 var game;
 
-
-/* **** Guessing Game Functions **** */
-
-// Generate the Winning Number
-
-function generateWinningNumber(){
-	return Math.floor((Math.random()*100)+1);
-}
-
-// Fetch the Players Guess
-
+//Fetch players guess
 function playersGuessSubmission(){
-	return +$('input').val();
+	return +$('#guess').val();
 }
 
 // Determine if the next guess should be a lower or higher number
@@ -42,57 +28,80 @@ function checkGuess(player, winNum, guess){
 			}
 	}else{
 		//duplicate guess
-		message ="duplicate guess!";
+		message ="Duplicate Guess!";
 	}
 	return guessMessage(player, message);
 }
 
 //return a string that will be used in the DOM message when the checkGuess function is invoked.
 function guessMessage(player, msg){
-	var infoPlayer = "Number of guesses: " + player.numGuess + "\n";
-	return infoPlayer+ msg;
+	var infoPlayer = playerInfo(player);
+	return infoPlayer + msg;
 }
 
 // Create a provide hint button that provides additional clues to the "Player"
 
 function provideHint(){
 	// add code here
+
 }
 
-// Allow the "Player" to Play Again
 
 function playAgain(){
 	// add code here
+	var numPlayers = $('#numPlayer').val() || 1;
+	game = new Game();
+	for (var i = 0; i< numPlayers; i++){
+		var p = new Player();
+		game.addPlayer(p);
+	}
+	game.updatePlayerList();
+	game.setCurrentPlayer(0);
 }
 
 //initialize game. New player, New winning number.
-function initialize(){
+function playerInfo(player){
+	var identity = '<h2> Player: '+player.getPlayerNum()+'</h2> \n';
+	var turn = '<p>Number of guesses: ' + player.numGuess + '</p>\n';
+	return identity+turn;
+}
 
+function displayMessage(message){
+	$('.result').empty();
+	$('.result').append(message);
+	$('.result').find('h2').addClass('highlight');
 }
 
 
 $(document).ready(function(){
-	game = new Game();
-	var player = new Player();
-	game.addPlayer(player);
-	//var winningNumber = generateWinningNumber();
-	console.log("Winning number "+game.winningNum);
+	var currentPlayer;
+	$('#start').on('click', function(){
+		playAgain();
+		console.log("NEW ROUND");
+		currentPlayer = game.getCurrentPlayer();
+		$(this).attr('disabled','disabled'); //disable button
+		$('.preset').toggleClass('hide');
+		console.log(game.getWinningNumber());
+	});
 
-	$('#guess').on('click', function(){
+	$('#submit').on('click', function(){
 		var guess = playersGuessSubmission();
-		console.log("Your guess "+guess);
+		console.log("Your guess " + guess);
 		//run checkGuess but the message will be from guessMessage()
-		var message = checkGuess(player, game.winningNum, guess);
+		var message = "";
+		if(currentPlayer.getNumGuess() < game.getLimit()){
+			message += checkGuess(currentPlayer, game.getWinningNumber(), guess);
+		}else{
+			message += "Sorry. You ran out of turns";
+		}
 		console.log(message);
+		displayMessage(message);
+		game.nextPlayer();
+		currentPlayer = game.getCurrentPlayer();
 	});
 
-	$('#play').on('click',function(){
-		game = new Game();
-		player = new Player();
-		game.addPlayer(player);
-		console.log("Winning number "+game.winningNum);
+	$('#replay').on('click',function(){
+		$('.preset').toggleClass('hide');
+		$('#start').removeAttr('disabled');
 	});
-
 });
-
-/* **** Event Listeners/Handlers ****  */
