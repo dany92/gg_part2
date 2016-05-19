@@ -4,7 +4,6 @@ var Game = function(){
 	this.players = []; //list of players
 	this.currentPlayer = {};
 	this.winningNum = 100; //winning number
-	this.losers = 0;
 	this.init();
 }
 

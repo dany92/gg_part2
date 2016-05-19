@@ -69,7 +69,7 @@ function playAgain(){
 
 function playerInfo(player){
 	var identity = '<h2> Player: '+(player.getPlayerNum()+1)+'</h2> \n';
-	var turn = '<p>Number of guesses: ' + player.numGuess + '</p>\n';
+	var turn = '<p>Guesses Left: ' + (game.getLimit()-player.numGuess) + '</p>\n';
 	return identity+turn;
 }
 
