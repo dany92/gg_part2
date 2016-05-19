@@ -7,20 +7,25 @@
 	</head>
 	<body>
 		<main>
-			<div class="preset">
-				<input id="numPlayer" type="number" min="1" max="3" placeholder="# Players" required autofocus>
-				<button type="button" id="start">Start</button>
+			<div class="begin">
+				<div class="preset">
+					<input id="numPlayer" type="number" min="1" max="3" placeholder="# Players" required autofocus>
+					<button type="button" id="start">Start</button>
+				</div>
+				<div class="preset hide">
+					<div class='next-line'>
+						<input id="guess" type="number" min="1" max="100" placeholder="1 to 100" pattern="[1-9][0-9]?$|^100$" required>
+						<button type="button" id="submit">Guess</button>
+					</div>
+					<div class="result"></div>
+					<div class='next-line'>
+						<button type="button" id="hint">Hint!</button>
+					</div>
+				</div>
 			</div>
-			<div class="preset hide">
-				<div class='next-line'>
-					<input id="guess" type="number" min="1" max="100" placeholder="1 to 100" pattern="[1-9][0-9]?$|^100$" required>
-					<button type="button" id="submit">Guess</button>
-				</div>
+			<div class="postset hide">
 				<div class="result"></div>
-				<div class='next-line'>
-					<button type="button" id="hint">Hint!</button>
-					<button type="button" id="replay">Play Again</button>
-				</div>
+				<button type="button" id="replay">Play Again</button>
 			</div>
 		</main>
 		<script src="jquery.min.js"></script>

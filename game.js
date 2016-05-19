@@ -1,6 +1,6 @@
 //Game Object
 var Game = function(){
-	this.limit = 2; //number of tries allowed per player
+	this.limit = 5; //number of tries allowed per player
 	this.players = []; //list of players
 	this.currentPlayer = {};
 	this.winningNum = 100; //winning number
@@ -13,7 +13,6 @@ Game.prototype.init = function(){
 }
 
 Game.prototype.addPlayer = function(player){
-	player.guessLeft = this.limit;
 	player.setPlayerNum(this.players.length);
 	this.players.push(player);
 }
@@ -45,6 +44,10 @@ Game.prototype.getCurrentPlayer = function(){
 		this.currentPlayer = this.players[0];
 	}
 	return this.currentPlayer;
+}
+
+Game.prototype.getNumPlayers = function(){
+	return this.players.length;
 }
 
 Game.prototype.nextPlayer = function(){

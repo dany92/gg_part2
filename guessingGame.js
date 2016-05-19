@@ -1,5 +1,3 @@
-/* **** Global Variables **** */
-// try to elminate these global variables in your project, these are here just to start.
 var game;
 
 //Fetch players guess
@@ -10,50 +8,57 @@ function playersGuessSubmission(){
 }
 
 // Determine if the next guess should be a lower or higher number
-
 function lowerOrHigher(winNum, guess){
-	//Display the result on the DOM. For now, alert
 	var higher = (winNum > guess) ? true:false;
-	return((higher)? "Winning number is higher!":"Winning number is lower!");
+	return((higher)? "Guess higher!":"Guess lower!");
 }
 
 // Check if the Player's Guess is the winning number 
-
 function checkGuess(player, winNum, guess){
 	var message ="";
-	if(player.filterGuess(guess)){
-			if(winNum === guess){
-				//guessesd the right number!
-				message = "Congrats! You won";
-			}else{
-				message = lowerOrHigher(winNum, guess);
-			}
+	if(winNum === guess){
+		message = '<p>Congrats! You won</p>';
+		finish(message);
 	}else{
-		//duplicate guess
-		message ="Duplicate Guess!";
+		if(player.getNumGuess() >= game.getLimit() && player.getPlayerNum()===game.getNumPlayers()-1){
+			message = '<p>Game Over. No more turns.</p>';
+			finish(message);
+		}else{
+			guessMessage(player, lowerOrHigher(winNum, guess));
+		}
 	}
-	return guessMessage(player, message);
+}
+
+function finish(msg){
+	$('.result').empty();
+	$('.begin').addClass('hide');
+	$('.postset').removeClass('hide');
+	$('.result').append(msg);
 }
 
 //return a string that will be used in the DOM message when the checkGuess function is invoked.
 function guessMessage(player, msg){
 	var infoPlayer = playerInfo(player);
-	return infoPlayer + msg;
+	displayMessage(infoPlayer + msg);
 }
 
 // Create a provide hint button that provides additional clues to the "Player"
 
-function provideHint(){
-	// add code here
-
+function provideHint(n){
+	var position = Math.floor(Math.random()*n);
+	var result = [];
+	for(var i=0; i<n; i++){
+		result[i] = (i === position)? game.getWinningNumber() : Math.floor((Math.random()*100)+1);
+	} 
+	return result;
 }
 
 
 function playAgain(){
-	// add code here
+	game = new Game();
+	$('.result').empty();
 	var numPlayers = $('#numPlayer').val() || 1;
 	$('#numPlayer').val('');
-	game = new Game();
 	for (var i = 0; i< numPlayers; i++){
 		var p = new Player();
 		game.addPlayer(p);
@@ -62,9 +67,8 @@ function playAgain(){
 	game.setCurrentPlayer(0);
 }
 
-//initialize game. New player, New winning number.
 function playerInfo(player){
-	var identity = '<h2> Player: '+player.getPlayerNum()+'</h2> \n';
+	var identity = '<h2> Player: '+(player.getPlayerNum()+1)+'</h2> \n';
 	var turn = '<p>Number of guesses: ' + player.numGuess + '</p>\n';
 	return identity+turn;
 }
@@ -75,6 +79,17 @@ function displayMessage(message){
 	$('.result').find('h2').addClass('highlight');
 }
 
+function processGuess(player){
+	var guess = playersGuessSubmission();
+	if(player.filterGuess(guess)){
+		checkGuess(player, game.getWinningNumber(), guess);
+	}else{
+		message ='<p>Duplicate Guess!</p>';
+		displayMessage(message);
+	}
+	console.log("Your guess " + guess);
+	//run checkGuess but the message will be from guessMessage()
+}
 
 $(document).ready(function(){
 	var currentPlayer;
@@ -82,28 +97,32 @@ $(document).ready(function(){
 		playAgain();
 		console.log("NEW ROUND");
 		currentPlayer = game.getCurrentPlayer();
-		//$(this).attr('disabled','disabled'); //disable button
 		$('.preset').toggleClass('hide');
 		console.log(game.getWinningNumber());
+		//enter is only handled after the start button has been pressed
+		$(document).keydown(function (event){
+		    if(event.keyCode == 13){
+		        processGuess(currentPlayer);
+				game.nextPlayer();
+				currentPlayer = game.getCurrentPlayer();
+		    }
+		});
 	});
 
 	$('#submit').on('click', function(){
-		var guess = playersGuessSubmission();
-		console.log("Your guess " + guess);
-		//run checkGuess but the message will be from guessMessage()
-		var message = "";
-		if(currentPlayer.getNumGuess() < game.getLimit()){
-			message += checkGuess(currentPlayer, game.getWinningNumber(), guess);
-		}else{
-			message += "Sorry. You ran out of turns";
-		}
-		displayMessage(message);
+		processGuess(currentPlayer);
 		game.nextPlayer();
 		currentPlayer = game.getCurrentPlayer();
 	});
 
+	$('#hint').on('click', function(){
+		var hints = provideHint(3).join(', ');
+		displayMessage(hints);
+	});
+
 	$('#replay').on('click',function(){
+		$('.begin').removeClass('hide');
+		$('.postset').addClass('hide');
 		$('.preset').toggleClass('hide');
-		//$('#start').removeAttr('disabled');
 	});
 });
