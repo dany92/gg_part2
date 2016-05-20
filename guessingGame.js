@@ -10,7 +10,28 @@ function playersGuessSubmission(){
 // Determine if the next guess should be a lower or higher number
 function lowerOrHigher(winNum, guess){
 	var higher = (winNum > guess) ? true:false;
-	return((higher)? "Guess higher!":"Guess lower!");
+	var message = (higher)? '<p>Guess higher!':'<p>Guess lower!';
+	message = calcDistance(winNum, guess, message);
+	return message;
+}
+
+function calcDistance(winNum, guess, message){
+	var diff = Math.abs(winNum-guess);
+	var msg=message;
+	switch(true){
+		case (diff<=5):
+			msg += ' Within 5 digits of winning number!</p>';
+			break;
+		case (diff<=10):
+			msg += ' Within 10 digits of winning number!</p>';
+			break;
+		case (diff<=25):
+			msg += ' Within 25 digits of winning number!</p>';
+			break;
+		default:
+			msg += ' Greater than 25 digits of winning number!</p>';
+	}
+	return msg;
 }
 
 // Check if the Player's Guess is the winning number 
@@ -24,6 +45,7 @@ function checkGuess(player, winNum, guess){
 			message = '<p>Game Over. No more turns.</p>';
 			finish(message);
 		}else{
+			game.nextPlayer();
 			guessMessage(player, lowerOrHigher(winNum, guess));
 		}
 	}
@@ -39,7 +61,14 @@ function finish(msg){
 //return a string that will be used in the DOM message when the checkGuess function is invoked.
 function guessMessage(player, msg){
 	var infoPlayer = playerInfo(player);
-	displayMessage(infoPlayer + msg);
+	var nextPlayer = '<h2>Next player is Player '+(game.getCurrentPlayer().getPlayerNum()+1)+'</h2>';
+	displayMessage(nextPlayer + infoPlayer + msg);
+}
+
+function displayMessage(message){
+	$('.result').empty();
+	$('.result').append(message);
+	$('.result').find('h2').addClass('highlight');
 }
 
 // Create a provide hint button that provides additional clues to the "Player"
@@ -68,15 +97,9 @@ function playAgain(){
 }
 
 function playerInfo(player){
-	var identity = '<h2> Player: '+(player.getPlayerNum()+1)+'</h2> \n';
+	var identity = '\n<h2> Player: '+(player.getPlayerNum()+1)+'</h2> \n';
 	var turn = '<p>Guesses Left: ' + (game.getLimit()-player.numGuess) + '</p>\n';
 	return identity+turn;
-}
-
-function displayMessage(message){
-	$('.result').empty();
-	$('.result').append(message);
-	$('.result').find('h2').addClass('highlight');
 }
 
 function processGuess(player){
@@ -99,19 +122,17 @@ $(document).ready(function(){
 		currentPlayer = game.getCurrentPlayer();
 		$('.preset').toggleClass('hide');
 		console.log(game.getWinningNumber());
-		//enter is only handled after the start button has been pressed
-		$(document).keydown(function (event){
-		    if(event.keyCode == 13){
-		        processGuess(currentPlayer);
-				game.nextPlayer();
-				currentPlayer = game.getCurrentPlayer();
-		    }
-		});
 	});
 
+	$('#guess').keydown(function (event){
+	    if(event.keyCode == 13){
+	        processGuess(currentPlayer);
+	        currentPlayer = game.getCurrentPlayer();
+	    }
+	});
+	
 	$('#submit').on('click', function(){
 		processGuess(currentPlayer);
-		game.nextPlayer();
 		currentPlayer = game.getCurrentPlayer();
 	});
 
