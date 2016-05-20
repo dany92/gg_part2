@@ -24,7 +24,7 @@ input{
 	border-radius: 5px;
 	height: 50px;
 	width: 20%;
-	font-size: 4vw;
+	font-size: 3vw;
 	text-align: center;
 	vertical-align: top;
 }
@@ -80,9 +80,14 @@ button:hover{
 .highlight{
 	color: #F50057;
 	font-weight: bold;
-	padding: 5px;
-	border: solid 3px #F50057;
-	display: inline;
+	padding: 3px;
+	display: block;
+}
+
+.ending{
+	font-weight: bold;
+	display: block;
+	color: #FF5722;
 }
 
 .hide{

@@ -38,11 +38,11 @@ function calcDistance(winNum, guess, message){
 function checkGuess(player, winNum, guess){
 	var message ="";
 	if(winNum === guess){
-		message = '<p>Congrats! You won</p>';
+		message = '<h1>Congrats! Player ' + (player.getPlayerNum()+1) + ' won!!</h1>';
 		finish(message);
 	}else{
 		if(player.getNumGuess() >= game.getLimit() && player.getPlayerNum()===game.getNumPlayers()-1){
-			message = '<p>Game Over. No more turns.</p>';
+			message = '<h1>Game Over. No more turns.</h1>';
 			finish(message);
 		}else{
 			game.nextPlayer();
@@ -56,12 +56,13 @@ function finish(msg){
 	$('.begin').addClass('hide');
 	$('.postset').removeClass('hide');
 	$('.result').append(msg);
+	$('.result').find('h1').addClass('ending').animate({fontSize: '6vw'}, "slow");
 }
 
 //return a string that will be used in the DOM message when the checkGuess function is invoked.
 function guessMessage(player, msg){
 	var infoPlayer = playerInfo(player);
-	var nextPlayer = '<h2>Next player is Player '+(game.getCurrentPlayer().getPlayerNum()+1)+'</h2>';
+	var nextPlayer = '<div class="next-line"><h2>Now it is Player '+(game.getCurrentPlayer().getPlayerNum()+1)+'\'s turn.</h2></div>';
 	displayMessage(nextPlayer + infoPlayer + msg);
 }
 
@@ -97,7 +98,7 @@ function playAgain(){
 }
 
 function playerInfo(player){
-	var identity = '\n<h2> Player: '+(player.getPlayerNum()+1)+'</h2> \n';
+	var identity = '\n<h3> Player: '+(player.getPlayerNum()+1)+'</h3> \n';
 	var turn = '<p>Guesses Left: ' + (game.getLimit()-player.numGuess) + '</p>\n';
 	return identity+turn;
 }
